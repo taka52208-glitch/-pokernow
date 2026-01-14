@@ -23,7 +23,7 @@ const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3247';
 // 許可するオリジン
 const allowedOrigins = isProduction
   ? [frontendUrl]
-  : ['http://localhost:3247', 'http://localhost:5173'];
+  : ['http://localhost:3247', 'http://localhost:3249', 'http://localhost:5173'];
 
 // ミドルウェア
 app.use('*', logger());
