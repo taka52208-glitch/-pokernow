@@ -16,15 +16,15 @@
   "dependencies": {
     "@hono/node-server": "^1.13.7",
     "@prisma/client": "^6.2.1",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.10.6",
     "hono": "^4.6.16",
     "jsonwebtoken": "^9.0.2",
+    "prisma": "^6.2.1",
+    "typescript": "^5.7.3",
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^22.10.6",
-    "prisma": "^6.2.1",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.3"
+    "tsx": "^4.19.2"
   }
 }
