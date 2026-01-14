@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P-003: 店舗詳細 - モックアップ</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      color: #FFFFFF;
+      background-color: #0A0A0A;
+      min-height: 100vh;
+    }
+
+    /* ヘッダーはMainLayoutが提供するため含めない */
+
+    /* コンテナ */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 16px; /* spacing(2) */
+    }
+
+    /* 店舗画像セクション */
+    .shop-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #1E1E1E 0%, #2A2A2A 100%);
+      border-radius: 8px;
+      margin-bottom: 16px; /* spacing(2) */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .shop-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .shop-image-placeholder {
+      color: #B0B0B0;
+      font-size: 48px;
+    }
+
+    /* 店舗基本情報 */
+    .shop-info {
+      margin-bottom: 24px; /* spacing(3) */
+    }
+    .shop-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #FFD700;
+      margin-bottom: 8px; /* spacing(1) */
+    }
+    .shop-address {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px; /* spacing(1) */
+      color: #B0B0B0;
+      font-size: 0.875rem;
+    }
+    .shop-address .material-icons {
+      font-size: 18px;
+      color: #B0B0B0;
+    }
+
+    /* セクションタイトル */
+    .section-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      margin-bottom: 16px; /* spacing(2) */
+      padding-bottom: 8px; /* spacing(1) */
+      border-bottom: 1px solid rgba(255, 215, 0, 0.12);
+    }
+
+    /* 卓状況セクション */
+    .tables-section {
+      margin-bottom: 24px; /* spacing(3) */
+    }
+    .tables-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 8px; /* spacing(1) */
+    }
+    .table-card {
+      background: #141414;
+      border-radius: 8px;
+      padding: 12px; /* spacing(1.5) ≈ 12px */
+      text-align: center;
+      border: 1px solid rgba(255, 215, 0, 0.12);
+    }
+    .table-name {
+      font-size: 0.75rem;
+      color: #B0B0B0;
+      margin-bottom: 4px;
+    }
+    .table-seats {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+    .table-seats span {
+      color: #B0B0B0;
+      font-weight: 400;
+    }
+
+    /* 混雑度バッジ */
+    .congestion-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.625rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .congestion-low {
+      background: rgba(76, 175, 80, 0.2);
+      color: #4CAF50;
+    }
+    .congestion-medium {
+      background: rgba(255, 193, 7, 0.2);
+      color: #FFC107;
+    }
+    .congestion-high {
+      background: rgba(244, 67, 54, 0.2);
+      color: #F44336;
+    }
+
+    /* イベントセクション */
+    .events-section {
+      margin-bottom: 24px; /* spacing(3) */
+    }
+    .event-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px; /* spacing(1) */
+    }
+    .event-card {
+      background: #141414;
+      border-radius: 8px;
+      padding: 16px; /* spacing(2) */
+      border: 1px solid rgba(255, 215, 0, 0.12);
+    }
+    .event-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+    .event-time {
+      font-size: 0.75rem;
+      color: #B0B0B0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .event-time .material-icons {
+      font-size: 14px;
+    }
+
+    /* トーナメントセクション */
+    .tournament-section {
+      margin-bottom: 24px; /* spacing(3) */
+    }
+    .tournament-card {
+      background: linear-gradient(135deg, #1E1E1E 0%, #141414 100%);
+      border-radius: 12px;
+      padding: 24px; /* spacing(3) */
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+    .tournament-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px; /* spacing(2) */
+    }
+    .tournament-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #FFD700;
+    }
+    .tournament-status {
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(76, 175, 80, 0.2);
+      color: #4CAF50;
+    }
+    .tournament-status.break {
+      background: rgba(255, 193, 7, 0.2);
+      color: #FFC107;
+    }
+
+    /* トーナメントタイマー */
+    .tournament-timer {
+      text-align: center;
+      margin-bottom: 16px; /* spacing(2) */
+    }
+    .timer-display {
+      font-family: 'Inter', monospace;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 0.05em;
+    }
+    .timer-label {
+      font-size: 0.75rem;
+      color: #B0B0B0;
+      margin-top: 4px;
+    }
+
+    /* ブラインド情報 */
+    .blinds-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px; /* spacing(2) */
+      border-top: 1px solid rgba(255, 215, 0, 0.12);
+    }
+    .blinds-current {
+      text-align: center;
+    }
+    .blinds-label {
+      font-size: 0.625rem;
+      color: #B0B0B0;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .blinds-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      margin-top: 4px;
+    }
+    .level-badge {
+      background: rgba(255, 215, 0, 0.2);
+      color: #FFD700;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    /* 着席ボタン */
+    .seat-button-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px; /* spacing(2) */
+      background: linear-gradient(to top, #0A0A0A 0%, rgba(10, 10, 10, 0.95) 100%);
+    }
+    .seat-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px; /* spacing(1) */
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 16px 24px; /* spacing(2) spacing(3) */
+      background: #FFD700;
+      color: #0A0A0A;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+      transition: all 0.2s ease;
+    }
+    .seat-button:hover {
+      background: #FFE44D;
+      box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4);
+    }
+    .seat-button .material-icons {
+      font-size: 20px;
+    }
+
+    /* 下部の余白（固定ボタン分） */
+    .bottom-spacer {
+      height: 80px;
+    }
+
+    /* 空状態 */
+    .empty-state {
+      text-align: center;
+      padding: 24px; /* spacing(3) */
+      color: #B0B0B0;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <!--
+    MUI変換マッピング表
+    このHTMLモックアップは以下のMUIコンポーネントに変換されます：
+
+    - .container → <Container maxWidth="sm" sx={{ p: 2 }}>
+    - .shop-name → <Typography variant="h3" color="primary">
+    - .shop-address → <Typography variant="body2" color="text.secondary">
+    - .section-title → <Typography variant="h6">
+    - .table-card → <Card variant="outlined">
+    - .event-card → <Card variant="outlined">
+    - .tournament-card → <Card sx={{ border: '1px solid', borderColor: 'primary.main' }}>
+    - .timer-display → <Typography variant="h2" fontFamily="monospace">
+    - .seat-button → <Button variant="contained" color="primary" size="large" fullWidth>
+    - .congestion-badge → <CongestionBadge level="low|medium|high" />
+
+    spacing基準:
+    - 8px = spacing(1)
+    - 16px = spacing(2)
+    - 24px = spacing(3)
+    - 32px = spacing(4)
+  -->
+
+  <!-- ヘッダーはMainLayoutが提供 -->
+
+  <!-- コンテンツ開始 -->
+  <div class="container"> <!-- MUI: Container maxWidth="sm" sx={{ p: 2 }} -->
+
+    <!-- 店舗画像 -->
+    <div class="shop-image"> <!-- MUI: Box sx={{ width: '100%', height: 200, borderRadius: 2, mb: 2, overflow: 'hidden' }} -->
+      <!-- 実際の実装ではimgタグを使用 -->
+      <span class="material-icons shop-image-placeholder">store</span>
+    </div>
+
+    <!-- 店舗基本情報 -->
+    <div class="shop-info"> <!-- MUI: Box mb={3} -->
+      <h1 class="shop-name">Demo Poker Club</h1> <!-- MUI: Typography variant="h3" color="primary" -->
+      <div class="shop-address"> <!-- MUI: Box display="flex" alignItems="flex-start" gap={1} -->
+        <span class="material-icons">location_on</span> <!-- MUI: LocationOnIcon fontSize="small" color="text.secondary" -->
+        <span>東京都渋谷区道玄坂1-2-3 ポーカービル5F</span> <!-- MUI: Typography variant="body2" color="text.secondary" -->
+      </div>
+    </div>
+
+    <!-- 卓状況セクション -->
+    <section class="tables-section"> <!-- MUI: Box mb={3} -->
+      <h2 class="section-title">卓状況</h2> <!-- MUI: Typography variant="h6" sx={{ borderBottom: 1, borderColor: 'divider', pb: 1, mb: 2 }} -->
+      <div class="tables-grid"> <!-- MUI: Grid container spacing={1} -->
+
+        <div class="table-card"> <!-- MUI: Card variant="outlined" -->
+          <div class="table-name">卓1</div> <!-- MUI: Typography variant="caption" color="text.secondary" -->
+          <div class="table-seats">6<span>/9</span></div> <!-- MUI: Typography variant="h5" -->
+          <span class="congestion-badge congestion-medium">やや混雑</span> <!-- MUI: CongestionBadge level="medium" -->
+        </div>
+
+        <div class="table-card"> <!-- MUI: Card variant="outlined" -->
+          <div class="table-name">卓2</div>
+          <div class="table-seats">3<span>/9</span></div>
+          <span class="congestion-badge congestion-low">空き</span> <!-- MUI: CongestionBadge level="low" -->
+        </div>
+
+        <div class="table-card"> <!-- MUI: Card variant="outlined" -->
+          <div class="table-name">卓3</div>
+          <div class="table-seats">9<span>/9</span></div>
+          <span class="congestion-badge congestion-high">満席</span> <!-- MUI: CongestionBadge level="high" -->
+        </div>
+
+        <div class="table-card"> <!-- MUI: Card variant="outlined" -->
+          <div class="table-name">卓4</div>
+          <div class="table-seats">5<span>/9</span></div>
+          <span class="congestion-badge congestion-medium">やや混雑</span>
+        </div>
+
+        <div class="table-card"> <!-- MUI: Card variant="outlined" -->
+          <div class="table-name">卓5</div>
+          <div class="table-seats">2<span>/9</span></div>
+          <span class="congestion-badge congestion-low">空き</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 本日のイベント -->
+    <section class="events-section"> <!-- MUI: Box mb={3} -->
+      <h2 class="section-title">本日のイベント</h2> <!-- MUI: Typography variant="h6" -->
+      <div class="event-list"> <!-- MUI: Stack spacing={1} -->
+
+        <div class="event-card"> <!-- MUI: Card variant="outlined" sx={{ p: 2 }} -->
+          <div class="event-title">初心者講習会</div> <!-- MUI: Typography variant="subtitle2" -->
+          <div class="event-time"> <!-- MUI: Typography variant="caption" color="text.secondary" -->
+            <span class="material-icons">schedule</span> <!-- MUI: ScheduleIcon fontSize="small" -->
+            14:00 - 16:00
+          </div>
+        </div>
+
+        <div class="event-card"> <!-- MUI: Card variant="outlined" sx={{ p: 2 }} -->
+          <div class="event-title">ナイトトーナメント</div>
+          <div class="event-time">
+            <span class="material-icons">schedule</span>
+            20:00 -
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 開催中トーナメント -->
+    <section class="tournament-section"> <!-- MUI: Box mb={3} -->
+      <h2 class="section-title">開催中トーナメント</h2> <!-- MUI: Typography variant="h6" -->
+
+      <div class="tournament-card"> <!-- MUI: Card sx={{ p: 3, border: '1px solid', borderColor: 'primary.main', opacity: 0.3 }} -->
+        <div class="tournament-header"> <!-- MUI: Box display="flex" justifyContent="space-between" alignItems="center" mb={2} -->
+          <div class="tournament-name">サンデートーナメント</div> <!-- MUI: Typography variant="subtitle1" color="primary" -->
+          <span class="tournament-status">RUNNING</span> <!-- MUI: Chip label="RUNNING" color="success" size="small" -->
+        </div>
+
+        <div class="tournament-timer"> <!-- MUI: Box textAlign="center" mb={2} -->
+          <div class="timer-display">12:34</div> <!-- MUI: Typography variant="h2" fontFamily="monospace" fontWeight={700} -->
+          <div class="timer-label">残り時間</div> <!-- MUI: Typography variant="caption" color="text.secondary" -->
+        </div>
+
+        <div class="blinds-info"> <!-- MUI: Box display="flex" justifyContent="space-between" pt={2} borderTop={1} borderColor="divider" -->
+          <div class="blinds-current"> <!-- MUI: Box textAlign="center" -->
+            <div class="blinds-label">SB / BB</div> <!-- MUI: Typography variant="overline" color="text.secondary" -->
+            <div class="blinds-value">100 / 200</div> <!-- MUI: Typography variant="subtitle1" -->
+          </div>
+          <span class="level-badge">Lv.5</span> <!-- MUI: Chip label="Lv.5" color="primary" variant="outlined" -->
+          <div class="blinds-current">
+            <div class="blinds-label">ANTE</div>
+            <div class="blinds-value">25</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 下部の余白 -->
+    <div class="bottom-spacer"></div> <!-- MUI: Box sx={{ height: 80 }} -->
+
+  </div>
+  <!-- コンテンツ終了 -->
+
+  <!-- 着席ボタン（固定） -->
+  <div class="seat-button-container"> <!-- MUI: Box position="fixed" bottom={0} left={0} right={0} p={2} bgcolor="background.default" -->
+    <button class="seat-button"> <!-- MUI: Button variant="contained" color="primary" size="large" fullWidth startIcon={<QrCodeScannerIcon />} -->
+      <span class="material-icons">qr_code_scanner</span>
+      着席する
+    </button>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P-004: QRスキャン - モックアップ</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      color: #FFFFFF;
+      background-color: #0A0A0A;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* コンテナ */
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px; /* spacing(2) */
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ヘッダー */
+    .page-header {
+      text-align: center;
+      margin-bottom: 24px; /* spacing(3) */
+    }
+    .page-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+    .page-subtitle {
+      font-size: 0.875rem;
+      color: #B0B0B0;
+      margin-top: 8px; /* spacing(1) */
+    }
+
+    /* カメラエリア */
+    .camera-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+    .camera-container {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 1;
+      background: #141414;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .camera-preview {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1E1E1E 0%, #2A2A2A 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .camera-placeholder-icon {
+      font-size: 64px;
+      color: #B0B0B0;
+    }
+
+    /* スキャンフレーム（四隅のコーナーマーク） */
+    .scan-frame {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+    }
+    .scan-corner {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-color: #FFD700;
+      border-style: solid;
+    }
+    .scan-corner.top-left {
+      top: 0;
+      left: 0;
+      border-width: 3px 0 0 3px;
+      border-radius: 4px 0 0 0;
+    }
+    .scan-corner.top-right {
+      top: 0;
+      right: 0;
+      border-width: 3px 3px 0 0;
+      border-radius: 0 4px 0 0;
+    }
+    .scan-corner.bottom-left {
+      bottom: 0;
+      left: 0;
+      border-width: 0 0 3px 3px;
+      border-radius: 0 0 0 4px;
+    }
+    .scan-corner.bottom-right {
+      bottom: 0;
+      right: 0;
+      border-width: 0 3px 3px 0;
+      border-radius: 0 0 4px 0;
+    }
+
+    /* スキャンライン（アニメーション） */
+    .scan-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, #FFD700 50%, transparent 100%);
+      animation: scan 2s ease-in-out infinite;
+    }
+    @keyframes scan {
+      0%, 100% { top: 0; }
+      50% { top: calc(100% - 2px); }
+    }
+
+    /* 位置情報ステータス */
+    .location-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px; /* spacing(1) */
+      margin-top: 24px; /* spacing(3) */
+      padding: 8px 16px; /* spacing(1) spacing(2) */
+      background: rgba(76, 175, 80, 0.1);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: #4CAF50;
+    }
+    .location-status .material-icons {
+      font-size: 16px;
+    }
+
+    /* スキャン説明 */
+    .scan-instruction {
+      text-align: center;
+      margin-top: 24px; /* spacing(3) */
+      color: #B0B0B0;
+      font-size: 0.875rem;
+    }
+
+    /* ===== ダイアログ（オーバーレイ） ===== */
+    .dialog-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px; /* spacing(2) */
+    }
+    .dialog-overlay.active {
+      display: flex;
+    }
+    .dialog-box {
+      background: #141414;
+      border-radius: 16px;
+      padding: 24px; /* spacing(3) */
+      max-width: 360px;
+      width: 100%;
+      text-align: center;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+    .dialog-icon {
+      font-size: 48px;
+      color: #FFD700;
+      margin-bottom: 16px; /* spacing(2) */
+    }
+    .dialog-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      margin-bottom: 8px; /* spacing(1) */
+    }
+    .dialog-content {
+      color: #B0B0B0;
+      font-size: 0.875rem;
+      margin-bottom: 24px; /* spacing(3) */
+    }
+    .dialog-shop-name {
+      color: #FFD700;
+      font-weight: 600;
+    }
+    .dialog-table-name {
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+    .dialog-actions {
+      display: flex;
+      gap: 8px; /* spacing(1) */
+    }
+    .dialog-button {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .dialog-button.cancel {
+      background: transparent;
+      border: 1px solid #B0B0B0;
+      color: #B0B0B0;
+    }
+    .dialog-button.cancel:hover {
+      background: rgba(176, 176, 176, 0.1);
+    }
+    .dialog-button.confirm {
+      background: #FFD700;
+      border: none;
+      color: #0A0A0A;
+    }
+    .dialog-button.confirm:hover {
+      background: #FFE44D;
+    }
+
+    /* ===== 完了ダイアログ ===== */
+    .dialog-icon.success {
+      color: #4CAF50;
+    }
+    .success-message {
+      font-size: 1rem;
+      color: #FFFFFF;
+      margin-bottom: 8px; /* spacing(1) */
+    }
+    .success-submessage {
+      color: #B0B0B0;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <!--
+    MUI変換マッピング表
+    このHTMLモックアップは以下のMUIコンポーネントに変換されます：
+
+    - .container → <Container maxWidth="sm" sx={{ p: 2, display: 'flex', flexDirection: 'column', flex: 1 }}>
+    - .page-title → <Typography variant="h6">
+    - .page-subtitle → <Typography variant="body2" color="text.secondary">
+    - .camera-container → <Box sx={{ position: 'relative', width: '100%', maxWidth: 320, aspectRatio: '1' }}>
+    - .scan-corner → カスタムCSS or SVGで実装
+    - .location-status → <Chip icon={<LocationOnIcon />} label="店舗内にいます" color="success" variant="outlined" />
+    - .dialog-overlay → <Dialog open={open} onClose={handleClose}>
+    - .dialog-button.confirm → <Button variant="contained" color="primary">
+    - .dialog-button.cancel → <Button variant="outlined" color="inherit">
+
+    spacing基準:
+    - 8px = spacing(1)
+    - 16px = spacing(2)
+    - 24px = spacing(3)
+    - 32px = spacing(4)
+  -->
+
+  <!-- ヘッダーはMainLayoutが提供 -->
+
+  <!-- コンテンツ開始 -->
+  <div class="container"> <!-- MUI: Container maxWidth="sm" sx={{ p: 2, flex: 1, display: 'flex', flexDirection: 'column' }} -->
+
+    <!-- ページヘッダー -->
+    <div class="page-header"> <!-- MUI: Box textAlign="center" mb={3} -->
+      <h1 class="page-title">QRコードをスキャン</h1> <!-- MUI: Typography variant="h6" -->
+      <p class="page-subtitle">卓に設置されたQRコードを読み取ってください</p> <!-- MUI: Typography variant="body2" color="text.secondary" -->
+    </div>
+
+    <!-- カメラセクション -->
+    <section class="camera-section"> <!-- MUI: Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} -->
+
+      <!-- カメラプレビュー -->
+      <div class="camera-container"> <!-- MUI: Box sx={{ position: 'relative', width: '100%', maxWidth: 320, aspectRatio: '1', borderRadius: 4, overflow: 'hidden' }} -->
+        <div class="camera-preview"> <!-- MUI: Box (html5-qrcodeのコンテナ) -->
+          <!-- カメラプレビューのプレースホルダー -->
+          <span class="material-icons camera-placeholder-icon">videocam</span>
+        </div>
+
+        <!-- スキャンフレーム -->
+        <div class="scan-frame"> <!-- MUI: Box position="absolute" top={24} left={24} right={24} bottom={24} -->
+          <div class="scan-corner top-left"></div>
+          <div class="scan-corner top-right"></div>
+          <div class="scan-corner bottom-left"></div>
+          <div class="scan-corner bottom-right"></div>
+          <div class="scan-line"></div>
+        </div>
+      </div>
+
+      <!-- 位置情報ステータス -->
+      <div class="location-status"> <!-- MUI: Chip icon={<LocationOnIcon />} label="店舗内にいます" color="success" variant="outlined" size="small" sx={{ mt: 3 }} -->
+        <span class="material-icons">location_on</span>
+        店舗内にいます
+      </div>
+
+      <!-- スキャン説明 -->
+      <p class="scan-instruction"> <!-- MUI: Typography variant="body2" color="text.secondary" textAlign="center" mt={3} -->
+        カメラをQRコードに向けてください
+      </p>
+
+    </section>
+
+  </div>
+  <!-- コンテンツ終了 -->
+
+
+  <!-- ===== 着席確認ダイアログ ===== -->
+  <div class="dialog-overlay" id="confirmDialog"> <!-- MUI: Dialog open={confirmDialogOpen} -->
+    <div class="dialog-box"> <!-- MUI: DialogContent -->
+      <span class="material-icons dialog-icon">event_seat</span> <!-- MUI: EventSeatIcon sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} -->
+      <h2 class="dialog-title">着席確認</h2> <!-- MUI: DialogTitle / Typography variant="h6" -->
+      <div class="dialog-content"> <!-- MUI: DialogContentText -->
+        <span class="dialog-shop-name">Demo Poker Club</span>の<br>
+        <span class="dialog-table-name">卓1</span>に着席しますか？
+      </div>
+      <div class="dialog-actions"> <!-- MUI: DialogActions -->
+        <button class="dialog-button cancel" onclick="closeConfirmDialog()">キャンセル</button> <!-- MUI: Button variant="outlined" color="inherit" -->
+        <button class="dialog-button confirm" onclick="showSuccessDialog()">着席する</button> <!-- MUI: Button variant="contained" color="primary" -->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ===== 着席完了ダイアログ ===== -->
+  <div class="dialog-overlay" id="successDialog"> <!-- MUI: Dialog open={successDialogOpen} -->
+    <div class="dialog-box"> <!-- MUI: DialogContent -->
+      <span class="material-icons dialog-icon success">check_circle</span> <!-- MUI: CheckCircleIcon sx={{ fontSize: 48, color: 'success.main', mb: 2 }} -->
+      <h2 class="dialog-title">着席完了</h2> <!-- MUI: DialogTitle / Typography variant="h6" -->
+      <div class="dialog-content"> <!-- MUI: DialogContentText -->
+        <p class="success-message"><span class="dialog-table-name">卓1</span>に着席しました</p> <!-- MUI: Typography variant="body1" -->
+        <p class="success-submessage">マイページへ移動します...</p> <!-- MUI: Typography variant="caption" color="text.secondary" -->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- デモ用JavaScript -->
+  <script>
+    // QR検出シミュレーション（3秒後に確認ダイアログ表示）
+    setTimeout(function() {
+      document.getElementById('confirmDialog').classList.add('active');
+    }, 3000);
+
+    function closeConfirmDialog() {
+      document.getElementById('confirmDialog').classList.remove('active');
+    }
+
+    function showSuccessDialog() {
+      document.getElementById('confirmDialog').classList.remove('active');
+      document.getElementById('successDialog').classList.add('active');
+
+      // 2秒後に自動的に閉じる（実際はマイページへ遷移）
+      setTimeout(function() {
+        document.getElementById('successDialog').classList.remove('active');
+        alert('マイページへ遷移します（デモ）');
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>

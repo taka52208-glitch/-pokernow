@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokerNow - デザインテーマセレクター</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ========================================
+           BASE STYLES
+        ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            color: #B0B0B0;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Theme Grid */
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        /* Theme Card */
+        .theme-card {
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .theme-card.selected {
+            outline: 3px solid #FFD700;
+            outline-offset: 3px;
+        }
+
+        .theme-card.selected::after {
+            content: "SELECTED";
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+
+        /* Theme Header */
+        .theme-header {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .theme-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        .theme-header p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Login Preview */
+        .login-preview {
+            padding: 30px 25px;
+        }
+
+        .app-logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .app-logo .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .app-logo .tagline {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            margin-top: 5px;
+            opacity: 0.7;
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Login Buttons */
+        .login-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .login-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.02);
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            gap: 15px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+        }
+
+        .divider span {
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+
+        /* Phone Input */
+        .phone-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .phone-input {
+            flex: 1;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .phone-submit {
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .phone-submit:hover {
+            transform: scale(1.02);
+        }
+
+        /* Color Palette */
+        .color-palette {
+            padding: 20px 25px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .palette-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            opacity: 0.7;
+        }
+
+        .color-swatches {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+        }
+
+        .color-swatch::after {
+            content: attr(data-name);
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .color-swatch:hover::after {
+            opacity: 1;
+        }
+
+        /* Select Button */
+        .select-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .select-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        /* ========================================
+           THEME 1: CLASSIC CASINO
+        ======================================== */
+        .theme-classic {
+            background: linear-gradient(180deg, #0D3320 0%, #071A10 100%);
+            box-shadow: 0 20px 60px rgba(0, 100, 50, 0.3);
+        }
+
+        .theme-classic .theme-header {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.3), rgba(13, 51, 32, 0.5));
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .theme-classic .theme-header h2 {
+            color: #FFD700;
+        }
+
+        .theme-classic .theme-header p {
+            color: #8FBC8F;
+        }
+
+        .theme-classic .login-preview {
+            background: rgba(7, 26, 16, 0.5);
+        }
+
+        .theme-classic .app-logo .logo-text {
+            color: #FFD700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .theme-classic .app-logo .tagline {
+            color: #8FBC8F;
+        }
+
+        .theme-classic .login-title {
+            color: #FFFFFF;
+        }
+
+        .theme-classic .btn-apple {
+            background: #FFFFFF;
+            color: #000000;
+        }
+
+        .theme-classic .btn-google {
+            background: #1E3D2F;
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .theme-classic .divider::before,
+        .theme-classic .divider::after {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .theme-classic .divider span {
+            color: #8FBC8F;
+        }
+
+        .theme-classic .phone-input {
+            background: #1E3D2F;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #FFFFFF;
+        }
+
+        .theme-classic .phone-input::placeholder {
+            color: #6B8F7B;
+        }
+
+        .theme-classic .phone-submit {
+            background: linear-gradient(135deg, #FFD700, #B8860B);
+            color: #0D3320;
+        }
+
+        .theme-classic .color-palette {
+            background: rgba(13, 51, 32, 0.5);
+        }
+
+        .theme-classic .palette-title {
+            color: #8FBC8F;
+        }
+
+        .theme-classic .select-btn {
+            background: linear-gradient(135deg, #FFD700, #B8860B);
+            color: #0D3320;
+        }
+
+        /* ========================================
+           THEME 2: MODERN LUXURY
+        ======================================== */
+        .theme-modern {
+            background: linear-gradient(180deg, #1A1A1A 0%, #0A0A0A 100%);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .theme-modern .theme-header {
+            background: linear-gradient(135deg, rgba(45, 45, 45, 0.8), rgba(26, 26, 26, 0.9));
+            border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+        }
+
+        .theme-modern .theme-header h2 {
+            color: #FFD700;
+        }
+
+        .theme-modern .theme-header p {
+            color: #888888;
+        }
+
+        .theme-modern .login-preview {
+            background: rgba(10, 10, 10, 0.5);
+        }
+
+        .theme-modern .app-logo .logo-text {
+            background: linear-gradient(135deg, #FFD700, #FFFFFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .theme-modern .app-logo .tagline {
+            color: #666666;
+        }
+
+        .theme-modern .login-title {
+            color: #FFFFFF;
+        }
+
+        .theme-modern .btn-apple {
+            background: #FFFFFF;
+            color: #000000;
+        }
+
+        .theme-modern .btn-google {
+            background: transparent;
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-modern .divider::before,
+        .theme-modern .divider::after {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-modern .divider span {
+            color: #666666;
+        }
+
+        .theme-modern .phone-input {
+            background: #2D2D2D;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+        }
+
+        .theme-modern .phone-input::placeholder {
+            color: #666666;
+        }
+
+        .theme-modern .phone-submit {
+            background: #FFD700;
+            color: #000000;
+        }
+
+        .theme-modern .color-palette {
+            background: rgba(45, 45, 45, 0.3);
+        }
+
+        .theme-modern .palette-title {
+            color: #666666;
+        }
+
+        .theme-modern .select-btn {
+            background: #FFD700;
+            color: #000000;
+        }
+
+        /* ========================================
+           THEME 3: NEON VEGAS
+        ======================================== */
+        .theme-neon {
+            background: linear-gradient(180deg, #1A0A2E 0%, #0D0518 100%);
+            box-shadow: 0 20px 60px rgba(138, 43, 226, 0.3);
+        }
+
+        .theme-neon .theme-header {
+            background: linear-gradient(135deg, rgba(75, 0, 130, 0.4), rgba(26, 10, 46, 0.6));
+            border-bottom: 1px solid rgba(255, 0, 128, 0.3);
+        }
+
+        .theme-neon .theme-header h2 {
+            background: linear-gradient(135deg, #FF0080, #00FFFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .theme-neon .theme-header p {
+            color: #9966CC;
+        }
+
+        .theme-neon .login-preview {
+            background: rgba(13, 5, 24, 0.5);
+        }
+
+        .theme-neon .app-logo .logo-text {
+            background: linear-gradient(135deg, #FF0080, #FF6B00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(255, 0, 128, 0.5);
+        }
+
+        .theme-neon .app-logo .tagline {
+            color: #00FFFF;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .theme-neon .login-title {
+            color: #FFFFFF;
+        }
+
+        .theme-neon .btn-apple {
+            background: #FFFFFF;
+            color: #000000;
+        }
+
+        .theme-neon .btn-google {
+            background: rgba(75, 0, 130, 0.5);
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 0, 128, 0.3);
+        }
+
+        .theme-neon .divider::before,
+        .theme-neon .divider::after {
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 128, 0.5), transparent);
+        }
+
+        .theme-neon .divider span {
+            color: #9966CC;
+        }
+
+        .theme-neon .phone-input {
+            background: rgba(75, 0, 130, 0.3);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            color: #FFFFFF;
+        }
+
+        .theme-neon .phone-input::placeholder {
+            color: #7B68EE;
+        }
+
+        .theme-neon .phone-submit {
+            background: linear-gradient(135deg, #FF0080, #FF6B00);
+            color: #FFFFFF;
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.4);
+        }
+
+        .theme-neon .color-palette {
+            background: rgba(26, 10, 46, 0.5);
+        }
+
+        .theme-neon .palette-title {
+            color: #9966CC;
+        }
+
+        .theme-neon .select-btn {
+            background: linear-gradient(135deg, #FF0080, #8B00FF);
+            color: #FFFFFF;
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+        }
+
+        /* ========================================
+           THEME 4: ROYAL GOLD
+        ======================================== */
+        .theme-royal {
+            background: linear-gradient(180deg, #2D1B1B 0%, #1A0F0F 100%);
+            box-shadow: 0 20px 60px rgba(128, 0, 32, 0.3);
+        }
+
+        .theme-royal .theme-header {
+            background: linear-gradient(135deg, rgba(128, 0, 32, 0.3), rgba(45, 27, 27, 0.5));
+            border-bottom: 1px solid rgba(255, 215, 0, 0.25);
+        }
+
+        .theme-royal .theme-header h2 {
+            color: #FFD700;
+        }
+
+        .theme-royal .theme-header p {
+            color: #C9A0A0;
+        }
+
+        .theme-royal .login-preview {
+            background: rgba(26, 15, 15, 0.5);
+        }
+
+        .theme-royal .app-logo .logo-text {
+            background: linear-gradient(135deg, #FFD700, #FFF8DC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .theme-royal .app-logo .tagline {
+            color: #DAA520;
+        }
+
+        .theme-royal .login-title {
+            color: #FFFFFF;
+        }
+
+        .theme-royal .btn-apple {
+            background: #FFFFFF;
+            color: #000000;
+        }
+
+        .theme-royal .btn-google {
+            background: rgba(128, 0, 32, 0.4);
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .theme-royal .divider::before,
+        .theme-royal .divider::after {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .theme-royal .divider span {
+            color: #C9A0A0;
+        }
+
+        .theme-royal .phone-input {
+            background: rgba(128, 0, 32, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #FFFFFF;
+        }
+
+        .theme-royal .phone-input::placeholder {
+            color: #996666;
+        }
+
+        .theme-royal .phone-submit {
+            background: linear-gradient(135deg, #FFD700, #DAA520);
+            color: #2D1B1B;
+        }
+
+        .theme-royal .color-palette {
+            background: rgba(45, 27, 27, 0.5);
+        }
+
+        .theme-royal .palette-title {
+            color: #C9A0A0;
+        }
+
+        .theme-royal .select-btn {
+            background: linear-gradient(135deg, #FFD700, #DAA520);
+            color: #2D1B1B;
+        }
+
+        /* ========================================
+           FOOTER
+        ======================================== */
+        .page-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .page-footer p {
+            color: #666666;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000000;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .export-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        /* ========================================
+           RESPONSIVE
+        ======================================== */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .theme-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+
+        /* ========================================
+           STATUS BADGES PREVIEW
+        ======================================== */
+        .status-badges {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .badge-available {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .badge-moderate {
+            background: rgba(255, 193, 7, 0.2);
+            color: #FFC107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .badge-busy {
+            background: rgba(244, 67, 54, 0.2);
+            color: #F44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="page-header">
+            <h1>PokerNow Design Themes</h1>
+            <p>アミューズメントポーカー店舗向けリアルタイム稼働管理アプリ「PokerNow」のデザインテーマを選択してください</p>
+        </header>
+
+        <!-- Theme Grid -->
+        <div class="theme-grid">
+            <!-- Theme 1: Classic Casino -->
+            <div class="theme-card theme-classic" id="theme-classic">
+                <div class="theme-header">
+                    <h2>Classic Casino</h2>
+                    <p>伝統的なカジノの重厚感 - 深いダークグリーン + ゴールド</p>
+                </div>
+                <div class="login-preview">
+                    <div class="app-logo">
+                        <div class="logo-text">PokerNow</div>
+                        <div class="tagline">PREMIUM POKER EXPERIENCE</div>
+                    </div>
+                    <div class="login-title">アカウントでログイン</div>
+                    <div class="login-buttons">
+                        <button class="login-btn btn-apple">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                            </svg>
+                            Appleでログイン
+                        </button>
+                        <button class="login-btn btn-google">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            Googleでログイン
+                        </button>
+                    </div>
+                    <div class="divider">
+                        <span>または</span>
+                    </div>
+                    <div class="phone-input-group">
+                        <input type="tel" class="phone-input" placeholder="電話番号">
+                        <button class="phone-submit">送信</button>
+                    </div>
+                    <div class="status-badges">
+                        <span class="badge badge-available">空き</span>
+                        <span class="badge badge-moderate">やや混雑</span>
+                        <span class="badge badge-busy">混雑</span>
+                    </div>
+                </div>
+                <div class="color-palette">
+                    <div class="palette-title">Color Palette</div>
+                    <div class="color-swatches">
+                        <div class="color-swatch" style="background: #0D3320;" data-name="Primary BG"></div>
+                        <div class="color-swatch" style="background: #1E3D2F;" data-name="Surface"></div>
+                        <div class="color-swatch" style="background: #FFD700;" data-name="Gold"></div>
+                        <div class="color-swatch" style="background: #2E7D32;" data-name="Felt Green"></div>
+                        <div class="color-swatch" style="background: #8FBC8F;" data-name="Text Secondary"></div>
+                        <div class="color-swatch" style="background: #FFFFFF;" data-name="Text Primary"></div>
+                    </div>
+                </div>
+                <button class="select-btn" onclick="selectTheme('classic')">このテーマを選択</button>
+            </div>
+
+            <!-- Theme 2: Modern Luxury -->
+            <div class="theme-card theme-modern" id="theme-modern">
+                <div class="theme-header">
+                    <h2>Modern Luxury</h2>
+                    <p>モダンでミニマルな高級感 - シャープなブラック + ゴールド</p>
+                </div>
+                <div class="login-preview">
+                    <div class="app-logo">
+                        <div class="logo-text">PokerNow</div>
+                        <div class="tagline">PREMIUM POKER EXPERIENCE</div>
+                    </div>
+                    <div class="login-title">アカウントでログイン</div>
+                    <div class="login-buttons">
+                        <button class="login-btn btn-apple">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                            </svg>
+                            Appleでログイン
+                        </button>
+                        <button class="login-btn btn-google">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            Googleでログイン
+                        </button>
+                    </div>
+                    <div class="divider">
+                        <span>または</span>
+                    </div>
+                    <div class="phone-input-group">
+                        <input type="tel" class="phone-input" placeholder="電話番号">
+                        <button class="phone-submit">送信</button>
+                    </div>
+                    <div class="status-badges">
+                        <span class="badge badge-available">空き</span>
+                        <span class="badge badge-moderate">やや混雑</span>
+                        <span class="badge badge-busy">混雑</span>
+                    </div>
+                </div>
+                <div class="color-palette">
+                    <div class="palette-title">Color Palette</div>
+                    <div class="color-swatches">
+                        <div class="color-swatch" style="background: #0A0A0A;" data-name="Primary BG"></div>
+                        <div class="color-swatch" style="background: #1A1A1A;" data-name="Secondary BG"></div>
+                        <div class="color-swatch" style="background: #2D2D2D;" data-name="Surface"></div>
+                        <div class="color-swatch" style="background: #FFD700;" data-name="Gold"></div>
+                        <div class="color-swatch" style="background: #888888;" data-name="Text Secondary"></div>
+                        <div class="color-swatch" style="background: #FFFFFF;" data-name="Text Primary"></div>
+                    </div>
+                </div>
+                <button class="select-btn" onclick="selectTheme('modern')">このテーマを選択</button>
+            </div>
+
+            <!-- Theme 3: Neon Vegas -->
+            <div class="theme-card theme-neon" id="theme-neon">
+                <div class="theme-header">
+                    <h2>Neon Vegas</h2>
+                    <p>ネオンを取り入れたラスベガス風 - パープル + ピンクのアクセント</p>
+                </div>
+                <div class="login-preview">
+                    <div class="app-logo">
+                        <div class="logo-text">PokerNow</div>
+                        <div class="tagline">PREMIUM POKER EXPERIENCE</div>
+                    </div>
+                    <div class="login-title">アカウントでログイン</div>
+                    <div class="login-buttons">
+                        <button class="login-btn btn-apple">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                            </svg>
+                            Appleでログイン
+                        </button>
+                        <button class="login-btn btn-google">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            Googleでログイン
+                        </button>
+                    </div>
+                    <div class="divider">
+                        <span>または</span>
+                    </div>
+                    <div class="phone-input-group">
+                        <input type="tel" class="phone-input" placeholder="電話番号">
+                        <button class="phone-submit">送信</button>
+                    </div>
+                    <div class="status-badges">
+                        <span class="badge badge-available">空き</span>
+                        <span class="badge badge-moderate">やや混雑</span>
+                        <span class="badge badge-busy">混雑</span>
+                    </div>
+                </div>
+                <div class="color-palette">
+                    <div class="palette-title">Color Palette</div>
+                    <div class="color-swatches">
+                        <div class="color-swatch" style="background: #0D0518;" data-name="Primary BG"></div>
+                        <div class="color-swatch" style="background: #1A0A2E;" data-name="Secondary BG"></div>
+                        <div class="color-swatch" style="background: #4B0082;" data-name="Surface"></div>
+                        <div class="color-swatch" style="background: #FF0080;" data-name="Neon Pink"></div>
+                        <div class="color-swatch" style="background: #00FFFF;" data-name="Cyan"></div>
+                        <div class="color-swatch" style="background: #8B00FF;" data-name="Purple"></div>
+                    </div>
+                </div>
+                <button class="select-btn" onclick="selectTheme('neon')">このテーマを選択</button>
+            </div>
+
+            <!-- Theme 4: Royal Gold -->
+            <div class="theme-card theme-royal" id="theme-royal">
+                <div class="theme-header">
+                    <h2>Royal Gold</h2>
+                    <p>王室風の気品あるゴールド - バーガンディ + ゴールド</p>
+                </div>
+                <div class="login-preview">
+                    <div class="app-logo">
+                        <div class="logo-text">PokerNow</div>
+                        <div class="tagline">PREMIUM POKER EXPERIENCE</div>
+                    </div>
+                    <div class="login-title">アカウントでログイン</div>
+                    <div class="login-buttons">
+                        <button class="login-btn btn-apple">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                            </svg>
+                            Appleでログイン
+                        </button>
+                        <button class="login-btn btn-google">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            Googleでログイン
+                        </button>
+                    </div>
+                    <div class="divider">
+                        <span>または</span>
+                    </div>
+                    <div class="phone-input-group">
+                        <input type="tel" class="phone-input" placeholder="電話番号">
+                        <button class="phone-submit">送信</button>
+                    </div>
+                    <div class="status-badges">
+                        <span class="badge badge-available">空き</span>
+                        <span class="badge badge-moderate">やや混雑</span>
+                        <span class="badge badge-busy">混雑</span>
+                    </div>
+                </div>
+                <div class="color-palette">
+                    <div class="palette-title">Color Palette</div>
+                    <div class="color-swatches">
+                        <div class="color-swatch" style="background: #1A0F0F;" data-name="Primary BG"></div>
+                        <div class="color-swatch" style="background: #2D1B1B;" data-name="Secondary BG"></div>
+                        <div class="color-swatch" style="background: #800020;" data-name="Burgundy"></div>
+                        <div class="color-swatch" style="background: #FFD700;" data-name="Gold"></div>
+                        <div class="color-swatch" style="background: #DAA520;" data-name="Dark Gold"></div>
+                        <div class="color-swatch" style="background: #C9A0A0;" data-name="Rose"></div>
+                    </div>
+                </div>
+                <button class="select-btn" onclick="selectTheme('royal')">このテーマを選択</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="page-footer">
+            <p>選択したテーマは開発時のデザインガイドラインとして使用されます</p>
+            <button class="export-btn" onclick="exportSelection()">選択を確定してエクスポート</button>
+        </footer>
+    </div>
+
+    <script>
+        let selectedTheme = null;
+
+        function selectTheme(themeName) {
+            // Remove selected class from all cards
+            document.querySelectorAll('.theme-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Add selected class to clicked card
+            const selectedCard = document.getElementById('theme-' + themeName);
+            selectedCard.classList.add('selected');
+            selectedTheme = themeName;
+
+            // Scroll to footer
+            document.querySelector('.page-footer').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+
+        function exportSelection() {
+            if (!selectedTheme) {
+                alert('テーマを選択してください');
+                return;
+            }
+
+            const themeData = {
+                classic: {
+                    name: 'Classic Casino',
+                    description: '伝統的なカジノの重厚感',
+                    colors: {
+                        primaryBg: '#0D3320',
+                        secondaryBg: '#071A10',
+                        surface: '#1E3D2F',
+                        primary: '#FFD700',
+                        accent: '#2E7D32',
+                        textPrimary: '#FFFFFF',
+                        textSecondary: '#8FBC8F',
+                        error: '#D32F2F',
+                        statusAvailable: '#4CAF50',
+                        statusModerate: '#FFC107',
+                        statusBusy: '#F44336'
+                    }
+                },
+                modern: {
+                    name: 'Modern Luxury',
+                    description: 'モダンでミニマルな高級感',
+                    colors: {
+                        primaryBg: '#0A0A0A',
+                        secondaryBg: '#1A1A1A',
+                        surface: '#2D2D2D',
+                        primary: '#FFD700',
+                        accent: '#333333',
+                        textPrimary: '#FFFFFF',
+                        textSecondary: '#888888',
+                        error: '#D32F2F',
+                        statusAvailable: '#4CAF50',
+                        statusModerate: '#FFC107',
+                        statusBusy: '#F44336'
+                    }
+                },
+                neon: {
+                    name: 'Neon Vegas',
+                    description: 'ネオンを取り入れたラスベガス風',
+                    colors: {
+                        primaryBg: '#0D0518',
+                        secondaryBg: '#1A0A2E',
+                        surface: '#4B0082',
+                        primary: '#FF0080',
+                        accent: '#00FFFF',
+                        secondary: '#8B00FF',
+                        textPrimary: '#FFFFFF',
+                        textSecondary: '#9966CC',
+                        error: '#FF4444',
+                        statusAvailable: '#4CAF50',
+                        statusModerate: '#FFC107',
+                        statusBusy: '#F44336'
+                    }
+                },
+                royal: {
+                    name: 'Royal Gold',
+                    description: '王室風の気品あるゴールド',
+                    colors: {
+                        primaryBg: '#1A0F0F',
+                        secondaryBg: '#2D1B1B',
+                        surface: '#800020',
+                        primary: '#FFD700',
+                        accent: '#DAA520',
+                        textPrimary: '#FFFFFF',
+                        textSecondary: '#C9A0A0',
+                        error: '#D32F2F',
+                        statusAvailable: '#4CAF50',
+                        statusModerate: '#FFC107',
+                        statusBusy: '#F44336'
+                    }
+                }
+            };
+
+            const selected = themeData[selectedTheme];
+            const json = JSON.stringify(selected, null, 2);
+
+            // Create download
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `pokernow-theme-${selectedTheme}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert(`「${selected.name}」テーマを選択しました。\nJSONファイルがダウンロードされます。`);
+        }
+    </script>
+</body>
+</html>
