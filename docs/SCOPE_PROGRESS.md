@@ -5,7 +5,7 @@
 | Phase | 内容 | 状態 |
 |-------|------|------|
 | Phase 1 | 要件定義 | [x] |
-| Phase 2 | Git/GitHub管理 | [ ] |
+| Phase 2 | Git/GitHub管理 | [x] |
 | Phase 3 | フロントエンド基盤 | [x] |
 | Phase 4 | ページ実装 | [x] |
 | Phase 5 | バックエンド基盤 | [x] |
